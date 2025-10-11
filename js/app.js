@@ -1,5 +1,4 @@
-import { getUserSession } from "./auth.js";
-
+import { getUserSession, signOutUser } from "./auth.js";
 
 const getSession = async () => {
   const { session } = await getUserSession();
@@ -8,8 +7,12 @@ const getSession = async () => {
   }
 };
 
-
 getSession();
+
+document.getElementById("logoutbtn").addEventListener("click", async () => {
+  await signOutUser();
+  window.location.href = "./html/login.html";
+});
 
 function selectBg(element, path) {
   document

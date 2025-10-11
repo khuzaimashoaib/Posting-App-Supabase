@@ -30,7 +30,12 @@ form.addEventListener("submit", async (e) => {
 const session = async () => {
   const { session } = await getUserSession();
   if (session) {
-    window.location.href = "/";
+     const basePath = window.location.hostname.includes("github.io")
+      ? "/Posting-App-Supabase"
+      : "";
+    window.location.href = `${basePath}/index.html`;
+    
+    // window.location.href = "../index.html";
   }
 };
 
