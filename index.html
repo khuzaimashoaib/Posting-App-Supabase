@@ -14,32 +14,30 @@
   <body>
     <header class="fb-header">
       <!-- Left: Logo -->
-      <div class="header-left">
+      <div class="header-left" id="logobtn">
         <img src="images/p.png" alt="Logo" class="logo" />
       </div>
 
       <!-- Center: Icons -->
       <div class="header-center">
-        <div class="icon"><i class="fas ">Private Post</i></div>
-        <div class="icon"><i class="fas ">Public Post</i></div>
+        <div class="icon" id="privateBtn"><i class="fas">Private Post</i></div>
+        <div class="icon" id="publicBtn"><i class="fas">Public Post</i></div>
         <!-- <div class="icon"><i class="fas fa-store"></i></div>
         <div class="icon"><i class="fas fa-gamepad"></i></div>
         <div class="icon"><i class="fas fa-users"></i></div> -->
       </div>
 
       <!-- Right: Profile, Msg, Notification -->
-      <div class="header-right">
-        <div class="icon" id="logoutbtn"><i class="fas fa-sign-out"></i></div>
-        <div class="icon"><i class="fas fa-bell"></i></div>
-
-        <img src="images/profile.png" alt="Profile" class="profile-pic" />
+      <div class="header-right" id="logoutbtn">
+        <span>Logout</span>
+        <i class="fas fa-right-from-bracket"></i>
       </div>
     </header>
 
     <div class="container">
       <div class="profile_container">
         <img src="images/profile.png" alt="" />
-        <input type="text" id="username" placeholder="User Name" />
+        <input type="text" id="username" />
       </div>
 
       <div class="des_container">
@@ -49,28 +47,26 @@
           placeholder="What's on your mind?"
         ></textarea>
       </div>
-
-      <div class="bg-options" id="bg-options">
-        <img src="images/bg1.png" onclick="selectBg(this, 'images/bg1.png')" />
-        <img src="images/bg2.png" onclick="selectBg(this, 'images/bg2.png')" />
-        <img src="images/bg3.png" onclick="selectBg(this, 'images/bg3.png')" />
-        <img src="images/bg4.png" onclick="selectBg(this, 'images/bg4.png')" />
-        <img src="images/bg5.png" onclick="selectBg(this, 'images/bg5.png')" />
-        <img src="images/bg6.png" onclick="selectBg(this, 'images/bg6.png')" />
-        <img src="images/bg7.png" onclick="selectBg(this, 'images/bg7.png')" />
-        <img src="images/bg8.png" onclick="selectBg(this, 'images/bg8.png')" />
-        <img src="images/bg9.png" onclick="selectBg(this, 'images/bg9.png')" />
-        <img
-          src="images/bg10.png"
-          onclick="selectBg(this, 'images/bg10.png')"
-        />
-        <i
-          class="fa-solid fa-xmark cancel-icon"
-          onclick="selectBg(this, null)"
-        ></i>
+      <div class="private_post_container">
+        <label for="privatePost">Private Post</label>
+        <input type="checkbox" id="privatePost" />
       </div>
 
-      <button class="post_button" onclick="createPost()">Post</button>
+      <div class="bg-options" id="bg-options">
+        <img src="images/bg1.png" data-path="images/bg1.png" />
+        <img src="images/bg2.png" data-path="images/bg2.png" />
+        <img src="images/bg3.png" data-path="images/bg3.png" />
+        <img src="images/bg4.png" data-path="images/bg4.png" />
+        <img src="images/bg5.png" data-path="images/bg5.png" />
+        <img src="images/bg6.png" data-path="images/bg6.png" />
+        <img src="images/bg7.png" data-path="images/bg7.png" />
+        <img src="images/bg8.png" data-path="images/bg8.png" />
+        <img src="images/bg9.png" data-path="images/bg9.png" />
+        <img src="images/bg10.png" data-path="images/bg10.png" />
+        <i class="fa-solid fa-xmark cancel-icon" data-path=""></i>
+      </div>
+
+      <button class="post_button" id="postBtn">Post</button>
     </div>
     <div id="editModal" class="modal">
       <div class="modal-content animate">
@@ -83,11 +79,9 @@
       </div>
     </div>
 
-    <div class="container" id="postsContainer"></div>
     <div id="toast" class="toast"></div>
 
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> -->
+    <script type="module" src="./js/view_post.js"></script>
     <script type="module" src="./js/app.js"></script>
   </body>
 </html>

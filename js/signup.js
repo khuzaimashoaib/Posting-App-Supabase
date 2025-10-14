@@ -1,30 +1,37 @@
 import { registerUser, getUserSession } from "./auth.js";
+import { showToast } from "../utils/toast.js";
 
 const form = document.getElementById("signupForm");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  const userNameInput = document.getElementById("signupName");
   const emailInput = document.getElementById("signupEmail");
   const passwordInput = document.getElementById("signupPassword");
 
+  const user = userNameInput.value.trim();
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
 
-  const signInResponse = await registerUser(email, password);
+  const signInResponse = await registerUser(email, password, user);
   if (signInResponse.user) {
-    alert("Sign up successfull");
+    showToast("🎉 Registration completed successfully.");
 
-    // sessionStorage.clear();
+
+
     localStorage.clear();
-    window.location.href = "./login.html";
+    setTimeout(() => {
+      window.location.href = "./login.html";
+    }, 1500);
   } else {
-    alert(signInResponse.message);
+    showToast(`❌ ${signInResponse.message}`);
   }
 });
 
 const session = async () => {
   const { session } = await getUserSession();
   if (session) {
-        const basePath = window.location.hostname.includes("github.io")
+    const basePath = window.location.hostname.includes("github.io")
       ? "/Posting-App-Supabase"
       : "";
     window.location.href = `${basePath}/index.html`;

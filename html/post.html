@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Posts</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <header class="fb-header">
+      <!-- Left: Logo -->
+      <div class="header-left" id="logobtn">
+        <img src="../images/p.png" alt="Logo" class="logo" />
+      </div>
+
+      <!-- Center: Icons -->
+      <div class="header-center">
+        <div class="icon" id="privateBtn" ><i class="fas">Private Post</i></div>
+        <div class="icon" id="publicBtn"><i class="fas">Public Post</i></div>
+    
+      </div>
+
+      <!-- Right: Profile, Msg, Notification -->
+      <div class="header-right" id="logoutbtn">
+        <span>Logout</span>
+        <i class="fas fa-right-from-bracket"></i>
+      </div>
+    </header>
+     
+
+    <div id="editModal" class="modal">
+      <div class="modal-content animate">
+        <h3>Edit Post</h3>
+        <textarea id="editDescInput" placeholder="Edit your post..."></textarea>
+        <div class="actions">
+          <button class="save-btn" onclick="saveEdit()">Save</button>
+          <button class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="postsContainer"></div>
+    <div id="toast" class="toast"></div>
+
+
+    <script type="module" src="../js/view_post.js"></script>
+    <script type="module" src="../js/app.js"></script>
+  </body>
+</html>
