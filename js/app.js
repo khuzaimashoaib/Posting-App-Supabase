@@ -4,15 +4,17 @@ import { showToast } from "../utils/toast.js";
 import { createPost } from "./create_post.js";
 // import { closeEditModal } from "../js/edit_post.js";
 
-
-
 // let posts = [];
 // let currentEditingPostId = null;
 
+const basePath = window.location.hostname.includes("github.io")
+  ? "/Posting-App-Supabase"
+  : "";
+  
 const getSession = async () => {
   const { session } = await getUserSession();
   if (!session) {
-    window.location.href = "./html/login.html";
+    window.location.href = `${basePath}/html/login.html`;
   }
   const user = session.user;
 
@@ -27,12 +29,12 @@ const getSession = async () => {
 getSession();
 
 document.getElementById("logobtn").addEventListener("click", async () => {
-  window.location.href = "../index.html";
+  window.location.href = `${basePath}/index.html`;
 });
 
 document.getElementById("logoutbtn").addEventListener("click", async () => {
   await signOutUser();
-  window.location.href = "../html/login.html";
+  window.location.href = `${basePath}/html/login.html`;
 });
 const postBtn = document.getElementById("postBtn");
 if (postBtn) {
@@ -44,10 +46,10 @@ const privateBtn = document.getElementById("privateBtn");
 
 if (publicBtn && privateBtn) {
   publicBtn.addEventListener("click", () => {
-    window.location.href = "../html/post.html?type=public";
+    window.location.href = `${basePath}/html/post.html?type=public`;
   });
   privateBtn.addEventListener("click", () => {
-    window.location.href = "../html/post.html?type=private";
+    window.location.href = `${basePath}/html/post.html?type=private`;
   });
 }
 
@@ -84,7 +86,3 @@ if (publicBtn && privateBtn) {
 //     renderPosts();
 //   }
 // }
-
-
-
-
