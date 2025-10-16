@@ -84,7 +84,7 @@ body {
 .container {
   max-width: 600px;
   margin: 32px auto;
-  background: white;
+  background: #fff;
   padding: 16px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -266,6 +266,7 @@ body {
 }
 
 .bg-image {
+  min-height: 150px;
   background-size: cover;
   background-position: center;
   padding: 20px;

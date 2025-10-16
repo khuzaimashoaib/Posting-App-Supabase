@@ -1,5 +1,16 @@
-export function renderPosts(posts) {
+import { toggleDropdown } from "../utils/dropdown.js";
+import { deletePost,updatePost } from "../js/database.js";
+import { editPost } from "../js/edit_post.js";
+// import { toggleLike } from "../js/likes.js";
 
+
+
+window.toggleDropdown = toggleDropdown;
+window.deletePost = deletePost;
+window.editPost = editPost;
+// window.toggleLike = toggleLike;
+
+export function renderPosts(posts) {
   const container = document.getElementById("postsContainer");
   if (!container) return;
   container.innerHTML = "";
@@ -11,7 +22,9 @@ export function renderPosts(posts) {
   container.style.display = "block";
 
   posts.forEach((post) => {
-        const comments = post.comments || []; // agar undefined ho to empty array
+      console.log("Rendering post:", post.id, "userId:", post.user_id);
+
+    const comments = post.comments || []; // agar undefined ho to empty array
 
     const postDiv = document.createElement("div");
     postDiv.className = "post";
@@ -35,7 +48,7 @@ export function renderPosts(posts) {
     <i class="fa-solid fa-ellipsis-vertical"></i>
   </button>
   <div class="dropdown-menu">
-    <button onclick="editPost(${post.id})">Edit</button>
+    <button onclick="editPost(${JSON.stringify(post).replace(/'/g, "\\'").replace(/"/g, '&quot;')})">Edit</button>
         <div class="dropdown-divider"></div>
 
     <button onclick="deletePost(${post.id})">Delete</button>
@@ -55,13 +68,23 @@ export function renderPosts(posts) {
 
 
   <!-- Bottom: Like & Comment buttons -->
+
   <div class="post-footer">
-  <button onclick="toggleLike(this, '${post.id}')"> 
+  <button onclick="toggleLike(this, '${post.id}', '${post.user_id}')">
+  <i class="fa-${post.liked ? "solid" : "regular"} fa-heart like-icon ${post.liked ? "liked" : ""}"></i>
+  Like <span class="likes-count">${post.likesCount || 0}</span>
+</button>
+
+  <!--
+  <button onclick="toggleLike(this, '${post.id}','${post.user_id}')"> 
     <i class="fa-${post.liked ? "solid" : "regular"} fa-heart like-icon ${
       post.liked ? "liked" : ""
     }"></i>Like
 
-</button>
+</button> -->
+
+
+
   <button onclick="toggleCommentBox(${
     post.id
   })"><i class="fa-solid fa-comment comment-icon"></i>Comment</button>

@@ -44,7 +44,7 @@ export async function createPost() {
   document.getElementById("description").value = "";
   document.getElementById("privatePost").checked = false;
 
-  // optional: reset selected background
+  // reset selected background
   selectedBackground = "";
   document
     .querySelectorAll(".bg-options img, .bg-options .cancel-icon")
