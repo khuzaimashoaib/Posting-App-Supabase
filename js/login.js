@@ -26,6 +26,8 @@ form.addEventListener("submit", async (e) => {
   showToast("✅ Successfully logged in.");
 });
 
+
+
 const session = async () => {
   const { session } = await getUserSession();
   if (session) {

@@ -1,16 +1,18 @@
 import { toggleDropdown } from "../utils/dropdown.js";
 import { deletePost,updatePost } from "../js/database.js";
 import { editPost } from "../js/edit_post.js";
-// import { toggleLike } from "../js/likes.js";
+import { toggleLike } from "./likes_ui.js";
+import { getLikeStatus, getCurrentUserId } from "./likes.js"; 
+
 
 
 
 window.toggleDropdown = toggleDropdown;
 window.deletePost = deletePost;
 window.editPost = editPost;
-// window.toggleLike = toggleLike;
+window.toggleLike = toggleLike;
 
-export function renderPosts(posts) {
+export async function renderPosts(posts) {
   const container = document.getElementById("postsContainer");
   if (!container) return;
   container.innerHTML = "";
@@ -21,10 +23,15 @@ export function renderPosts(posts) {
   }
   container.style.display = "block";
 
-  posts.forEach((post) => {
-      console.log("Rendering post:", post.id, "userId:", post.user_id);
+  const userId = await getCurrentUserId();
+  
+  // ✅ Ek sath sab posts ke like status fetch karo
+  const likePromises = posts.map(post => getLikeStatus(post.id, userId));
+  const likeStatuses = await Promise.all(likePromises);
 
-    const comments = post.comments || []; // agar undefined ho to empty array
+  posts.forEach((post, index) => {
+    const { hasLiked, likesCount } = likeStatuses[index];
+    const comments = post.comments || [];
 
     const postDiv = document.createElement("div");
     postDiv.className = "post";
@@ -70,28 +77,17 @@ export function renderPosts(posts) {
   <!-- Bottom: Like & Comment buttons -->
 
   <div class="post-footer">
-  <button onclick="toggleLike(this, '${post.id}', '${post.user_id}')">
-  <i class="fa-${post.liked ? "solid" : "regular"} fa-heart like-icon ${post.liked ? "liked" : ""}"></i>
-  Like <span class="likes-count">${post.likesCount || 0}</span>
+  <button onclick="toggleLike(this, '${post.id}')">
+  <i class="fa-${hasLiked ? "solid" : "regular"} fa-heart like-icon ${hasLiked ? "liked" : ""}"></i>
+  Like <span class="likes-count" data-count="${likesCount}">(${likesCount})</span>
 </button>
 
-  <!--
-  <button onclick="toggleLike(this, '${post.id}','${post.user_id}')"> 
-    <i class="fa-${post.liked ? "solid" : "regular"} fa-heart like-icon ${
-      post.liked ? "liked" : ""
-    }"></i>Like
 
-</button> -->
-
-
-
-  <button onclick="toggleCommentBox(${
-    post.id
-  })"><i class="fa-solid fa-comment comment-icon"></i>Comment</button>
+  <button ><i class="fa-solid fa-comment comment-icon"></i>Comment</button>
     
   </div>
 
-  <!-- Comment Section -->
+  <!-- Comment Section 
   <div class="comment-box" id="comment-${post.id}" style="display: ${
       comments.length > 0 ? "flex" : "none"
     };">
@@ -114,7 +110,7 @@ export function renderPosts(posts) {
         )
         .join("")}
     </ul>
-  </div>
+  </div>-->
 </div>
     `;
 

@@ -2,15 +2,13 @@ import { getUserSession, signOutUser } from "./auth.js";
 import { addPost, fetchPost } from "./database.js";
 import { showToast } from "../utils/toast.js";
 import { createPost } from "./create_post.js";
-// import { closeEditModal } from "../js/edit_post.js";
-
-// let posts = [];
-// let currentEditingPostId = null;
+import { initializeAllLikes } from "./likes_ui.js";
+import { getCurrentUserId } from "./likes.js";
 
 const basePath = window.location.hostname.includes("github.io")
   ? "/Posting-App-Supabase"
   : "";
-  
+
 const getSession = async () => {
   const { session } = await getUserSession();
   if (!session) {
@@ -25,8 +23,23 @@ const getSession = async () => {
     usernameInput.disabled = true;
   }
 };
+const initializeApp = async () => {
+  await getSession(); // Pehle session check
 
-getSession();
+  try {
+    const userId = await getCurrentUserId();
+
+    if (userId) {
+      await initializeAllLikes(); // Likes initialize
+    } else {
+      window.location.href = `${basePath}/html/login.html`;
+    }
+  } catch (error) {
+    console.error("Likes initialization error:", error);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", initializeApp);
 
 document.getElementById("logobtn").addEventListener("click", async () => {
   window.location.href = `${basePath}/index.html`;
@@ -52,37 +65,3 @@ if (publicBtn && privateBtn) {
     window.location.href = `${basePath}/html/post.html?type=private`;
   });
 }
-
-// function toggleLike(btn, id) {
-//   const likeIcon = btn.querySelector(".like-icon");
-
-//   likeIcon.classList.toggle("fa-regular");
-//   likeIcon.classList.toggle("fa-solid");
-//   likeIcon.classList.toggle("liked");
-
-//   const post = posts.find((p) => p.id == id);
-//   if (post) {
-//     post.liked = !post.liked;
-//   }
-// }
-
-// function toggleCommentBox(id) {
-//   const post = posts.find((p) => p.id === id);
-//   if (!post) return;
-//   const box = document.getElementById(`comment-${id}`);
-//   if (post.comments.length > 0) {
-//     return;
-//   }
-
-//   box.style.display = box.style.display === "none" ? "flex" : "none";
-// }
-
-// function addComment(id) {
-//   const input = document.getElementById(`comment-input-${id}`);
-//   const comment = input.value.trim();
-//   if (comment) {
-//     const post = posts.find((p) => p.id === id);
-//     post.comments.push(comment);
-//     renderPosts();
-//   }
-// }
