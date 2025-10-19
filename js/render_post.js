@@ -1,16 +1,28 @@
 import { toggleDropdown } from "../utils/dropdown.js";
-import { deletePost,updatePost } from "../js/database.js";
+import { deletePost, updatePost } from "../js/database.js";
 import { editPost } from "../js/edit_post.js";
 import { toggleLike } from "./likes_ui.js";
-import { getLikeStatus, getCurrentUserId } from "./likes.js"; 
-
-
-
+import { getLikeStatus } from "./likes.js";
 
 window.toggleDropdown = toggleDropdown;
 window.deletePost = deletePost;
 window.editPost = editPost;
 window.toggleLike = toggleLike;
+
+function getCurrentUserFromStorage() {
+  try {
+    const sessionData = localStorage.getItem(
+      "sb-agdpbinmknsodzissmlj-auth-token"
+    );
+    if (sessionData) {
+      const session = JSON.parse(sessionData);
+      return session.user;
+    }
+  } catch (error) {
+    console.error("Error getting user from storage:", error);
+  }
+  return null;
+}
 
 export async function renderPosts(posts) {
   const container = document.getElementById("postsContainer");
@@ -23,15 +35,21 @@ export async function renderPosts(posts) {
   }
   container.style.display = "block";
 
-  const userId = await getCurrentUserId();
-  
+  const currentUser = getCurrentUserFromStorage();
+  const currentUserEmail = currentUser?.email;
+  const currentUserId = currentUser?.id;
+
   // ✅ Ek sath sab posts ke like status fetch karo
-  const likePromises = posts.map(post => getLikeStatus(post.id, userId));
+  const likePromises = posts.map((post) =>
+    getLikeStatus(post.id, currentUserId)
+  );
   const likeStatuses = await Promise.all(likePromises);
 
   posts.forEach((post, index) => {
     const { hasLiked, likesCount } = likeStatuses[index];
     const comments = post.comments || [];
+
+    const isPostOwner = post.email === currentUserEmail;
 
     const postDiv = document.createElement("div");
     postDiv.className = "post";
@@ -50,19 +68,30 @@ export async function renderPosts(posts) {
         <small>${post.created_at}</small>
       </div>
     </div>
-<div class="dropdown-container">
-  <button onclick="toggleDropdown(this)" class="edit-btn">
+
+
+
+    
+    <div class="dropdown-container">
+
+    ${
+      isPostOwner
+        ? `<button onclick="toggleDropdown(this)" class="edit-btn">
     <i class="fa-solid fa-ellipsis-vertical"></i>
   </button>
   <div class="dropdown-menu">
-    <button onclick="editPost(${JSON.stringify(post).replace(/'/g, "\\'").replace(/"/g, '&quot;')})">Edit</button>
-        <div class="dropdown-divider"></div>
-
+    <button onclick="editPost(${JSON.stringify(post)
+      .replace(/'/g, "\\'")
+      .replace(/"/g, "&quot;")})">Edit</button>
+    <div class="dropdown-divider"></div>
     <button onclick="deletePost(${post.id})">Delete</button>
+    </div>
+    </div>`
+        : ""
+    } 
+  
+    </div>
   </div>
-</div>
-  </div>
-
 
   <!-- Middle: Background image + Description -->
 <div class="post-body">
@@ -78,7 +107,9 @@ export async function renderPosts(posts) {
 
   <div class="post-footer">
   <button onclick="toggleLike(this, '${post.id}')">
-  <i class="fa-${hasLiked ? "solid" : "regular"} fa-heart like-icon ${hasLiked ? "liked" : ""}"></i>
+  <i class="fa-${hasLiked ? "solid" : "regular"} fa-heart like-icon ${
+      hasLiked ? "liked" : ""
+    }"></i>
   Like <span class="likes-count" data-count="${likesCount}">(${likesCount})</span>
 </button>
 
