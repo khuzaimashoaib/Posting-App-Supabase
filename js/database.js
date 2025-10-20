@@ -1,4 +1,5 @@
 import { supabaseApi } from "../js/auth.js";
+import { showToast } from "../utils/toast.js";
 
 export async function fetchPost(isPrivate) {
   const {
@@ -62,6 +63,12 @@ export async function updatePost(
 
 export async function deletePost(id) {
   let { error } = await supabaseApi.from("Posts").delete().eq("id", id);
-  window.location.reload();
-  if (error) console.error("Delete error:", error);
-}
+
+  if (error) {
+    console.error("Delete error:", error);
+    showToast("Failed to delete post!", 3000);
+    return false;
+  }
+  
+
+  return true;}

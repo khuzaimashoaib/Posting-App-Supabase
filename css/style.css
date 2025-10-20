@@ -493,12 +493,79 @@ body {
   opacity: 1;
   bottom: 50px;
 }
+.menu-toggle {
+  display: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.offcanvas {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  color: #333;
+  transition: top 0.3s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.offcanvas.open {
+  top: 0;
+}
+
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #ddd;
+  font-weight: 600;
+}
+
+#closeCanvas {
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
+.offcanvas-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  text-align: center;
+}
+
+.offcanvas-content .icon,
+.offcanvas-content .logout {
+  background: #2196f3;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.offcanvas-content .logout {
+  background: #f44336;
+}
+
+
 
 @media (max-width: 768px) {
   .header-center,
-  .header-right .icon {
+  .header-right {
     display: none;
   }
+  .menu-toggle {
+    display: block;
+  }
+
+  
+
+
   .container,
   #postsContainer {
     margin: 20px;

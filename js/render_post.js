@@ -3,11 +3,30 @@ import { deletePost, updatePost } from "../js/database.js";
 import { editPost } from "../js/edit_post.js";
 import { toggleLike } from "./likes_ui.js";
 import { getLikeStatus } from "./likes.js";
+import { showToast } from "../utils/toast.js";
 
 window.toggleDropdown = toggleDropdown;
 window.deletePost = deletePost;
 window.editPost = editPost;
 window.toggleLike = toggleLike;
+
+function formatDateTime(dateString) {
+  const date = new Date(dateString);
+
+  // Date parts
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month 0-indexed
+  const year = date.getFullYear();
+
+  // Time parts
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // 0 ko 12 bana do
+
+  return `${day}-${month}-${year} • ${hours}:${minutes} ${ampm}`;
+}
 
 function getCurrentUserFromStorage() {
   try {
@@ -65,7 +84,7 @@ export async function renderPosts(posts) {
       <img src="../images/profile.png" alt="profile" class="profile-img" />
       <div>
         <h3>${post.name}</h3>
-        <small>${post.created_at}</small>
+        <small>${formatDateTime(post.created_at)}</small>
       </div>
     </div>
 
@@ -84,7 +103,7 @@ export async function renderPosts(posts) {
       .replace(/'/g, "\\'")
       .replace(/"/g, "&quot;")})">Edit</button>
     <div class="dropdown-divider"></div>
-    <button onclick="deletePost(${post.id})">Delete</button>
+    <button class="delete-post-btn" data-id='${post.id}'>Delete</button>
     </div>
     </div>`
         : ""
@@ -117,34 +136,21 @@ export async function renderPosts(posts) {
   <button ><i class="fa-solid fa-comment comment-icon"></i>Comment</button>
     
   </div>
-
-  <!-- Comment Section 
-  <div class="comment-box" id="comment-${post.id}" style="display: ${
-      comments.length > 0 ? "flex" : "none"
-    };">
-    <input type="text" id="comment-input-${
-      post.id
-    }" placeholder="Write a comment..." />
-    <button onclick="addComment(${
-      post.id
-    })"><i class="fa-solid fa-paper-plane"></i></button>
-    <ul id="comments-list-${post.id}">
-      ${comments
-        .map(
-          (c) => ` <li class="comment-item">
-          <img src="./images/profile.png" alt="Profile" class="comment-profile" />
-          <div class="comment-content">
-            <strong>${post.username}</strong>
-            <p>${c}</p>
-          </div>
-        </li>`
-        )
-        .join("")}
-    </ul>
-  </div>-->
-</div>
+  </div>
     `;
 
     container.appendChild(postDiv);
+
+    document.querySelectorAll(".delete-post-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id; // string or UUID
+        const success = await deletePost(id);
+
+        if (success) {
+          showToast("Post deleted successfully!", 1500);
+          setTimeout(() => window.location.reload(), 1000);
+        }
+      });
+    });
   });
 }

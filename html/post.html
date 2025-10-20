@@ -20,9 +20,12 @@
 
       <!-- Center: Icons -->
       <div class="header-center">
-        <div class="icon" id="privateBtn" ><i class="fas">Private Post</i></div>
+        <div class="icon" id="privateBtn"><i class="fas">Private Post</i></div>
         <div class="icon" id="publicBtn"><i class="fas">Public Post</i></div>
-    
+      </div>
+
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
       </div>
 
       <!-- Right: Profile, Msg, Notification -->
@@ -31,7 +34,6 @@
         <i class="fas fa-right-from-bracket"></i>
       </div>
     </header>
-     
 
     <div id="editModal" class="modal">
       <div class="modal-content animate">
@@ -40,6 +42,25 @@
         <div class="actions">
           <button class="save-btn" id="saveEditBtn">Save</button>
           <button class="cancel-btn" id="cancelEditBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Offcanvas Menu -->
+    <div class="offcanvas" id="offcanvasMenu">
+      <div class="offcanvas-header">
+        <span>Menu</span>
+        <i class="fas fa-times" id="closeCanvas"></i>
+      </div>
+
+      <div class="offcanvas-content">
+        <div class="icon" id="privateBtnOffcanvas">
+          <i class="fas">Private Post</i>
+        </div>
+        <div class="icon" id="publicBtnOffcanvas">
+          <i class="fas">Public Post</i>
+        </div>
+        <div class="logout" id="logoutBtnOffcanvas">
+          <i class="fas fa-right-from-bracket"></i> Logout
         </div>
       </div>
     </div>

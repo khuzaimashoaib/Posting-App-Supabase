@@ -22,9 +22,10 @@
       <div class="header-center">
         <div class="icon" id="privateBtn"><i class="fas">Private Post</i></div>
         <div class="icon" id="publicBtn"><i class="fas">Public Post</i></div>
-        <!-- <div class="icon"><i class="fas fa-store"></i></div>
-        <div class="icon"><i class="fas fa-gamepad"></i></div>
-        <div class="icon"><i class="fas fa-users"></i></div> -->
+      </div>
+
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
       </div>
 
       <!-- Right: Profile, Msg, Notification -->
@@ -70,6 +71,26 @@
     </div>
 
     <div id="toast" class="toast"></div>
+
+    <!-- Offcanvas Menu -->
+    <div class="offcanvas" id="offcanvasMenu">
+      <div class="offcanvas-header">
+        <span>Menu</span>
+        <i class="fas fa-times" id="closeCanvas"></i>
+      </div>
+
+      <div class="offcanvas-content">
+        <div class="icon" id="privateBtnOffcanvas">
+          <i class="fas">Private Post</i>
+        </div>
+        <div class="icon" id="publicBtnOffcanvas">
+          <i class="fas">Public Post</i>
+        </div>
+        <div class="logout" id="logoutBtnOffcanvas">
+          <i class="fas fa-right-from-bracket"></i> Logout
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="./js/view_post.js"></script>
     <script type="module" src="./js/app.js"></script>
